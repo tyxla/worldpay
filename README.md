@@ -17,7 +17,7 @@ Creating a new payment using the WorldPay gateway basically follows these three 
 2. The customer is redirected to WorldPay's secure servers to enter their payment details. No customer details are ever stored on your server.
 3. WorldPay will then send an optional **Worldpay_Response** back to your server as a callback. You can use this callback to update your database or set any processes you need to run after the transaction has been completed.
 
-This WorldPay package allows you to easily create a new **Request** and capture the resulting **Worldpay_Response**
+This WorldPay package allows you to easily create a new **Worldpay_Request** and capture the resulting **Worldpay_Response**
 
 ## WorldPay Environments, Routes and Callbacks
 By default, WorldPay has `development` and `production` environments. This allows you to test your application using the `development` environment without having to process real payments.
