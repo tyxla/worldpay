@@ -1,7 +1,6 @@
-<?php namespace PhilipBrown\WorldPay;
+<?php
 
-class Response
-{
+class Worldpay_Response {
     /**
      * @var string
      */
@@ -19,8 +18,7 @@ class Response
      * @param array $body
      * @return void
      */
-    public function __construct($password, array $body)
-    {
+    public function __construct($password, array $body) {
         $this->password = $password;
         $this->body     = $body;
     }
@@ -30,8 +28,7 @@ class Response
      *
      * @return bool
      */
-    public function isValid()
-    {
+    public function isValid() {
         return $this->callbackPW === (string) $this->password;
     }
 
@@ -40,8 +37,7 @@ class Response
      *
      * @return bool
      */
-    public function isSuccess()
-    {
+    public function isSuccess() {
         return $this->transStatus === 'Y';
     }
 
@@ -50,8 +46,7 @@ class Response
      *
      * @return bool
      */
-    public function isCancelled()
-    {
+    public function isCancelled() {
         return $this->transStatus === 'C';
     }
 
@@ -60,8 +55,7 @@ class Response
      *
      * @return bool
      */
-    public function isProduction()
-    {
+    public function isProduction() {
         return $this->testMode == 0;
     }
 
@@ -70,8 +64,7 @@ class Response
      *
      * @return bool
      */
-    public function isDevelopment()
-    {
+    public function isDevelopment() {
         return $this->testMode == 100;
     }
 
@@ -81,9 +74,8 @@ class Response
      * @param string $key
      * @return mixed
      */
-    public function __get($key)
-    {
-        if(isset($this->body[$key])) {
+    public function __get($key) {
+        if( isset($this->body[$key]) ) {
             return $this->body[$key];
         }
     }

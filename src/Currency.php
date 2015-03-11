@@ -1,9 +1,6 @@
-<?php namespace PhilipBrown\WorldPay;
+<?php
 
-use Assert\Assertion;
-
-class Currency
-{
+class Worldpay_Currency {
     /**
      * @var string
      */
@@ -15,39 +12,36 @@ class Currency
     private static $currencies;
 
     /**
-     * Create a new Currency
+     * Create a new Worldpay_Currency
      *
      * @param string $name
      */
-    private function __construct($name)
-    {
+    private function __construct($name) {
         if ( ! isset(self::$currencies)) {
-            self::$currencies = require __DIR__.'/currencies.php';
+            self::$currencies = Worldpay_Currencies::get();
         }
 
-        Assertion::keyExists(self::$currencies, $name);
+        Worldpay_Assertion::keyExists(self::$currencies, $name);
 
         $this->name = $name;
     }
 
     /**
-     * Set the Currency
+     * Set the Worldpay_Currency
      *
      * @param string $name
-     * @return Currency
+     * @return Worldpay_Currency
      */
-    public static function set($name)
-    {
-        return new Currency($name);
+    public static function set($name) {
+        return new Worldpay_Currency($name);
     }
 
     /**
-     * Return the Currency when cast to string
+     * Return the Worldpay_Currency when cast to string
      *
      * @return string
      */
-    public function __toString()
-    {
+    public function __toString() {
         return $this->name;
     }
 }

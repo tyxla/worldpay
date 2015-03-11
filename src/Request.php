@@ -1,13 +1,8 @@
-<?php namespace PhilipBrown\WorldPay;
+<?php
 
-use PhilipBrown\WorldPay\Currency;
-use PhilipBrown\WorldPay\Environment;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
-class Request
-{
+class Worldpay_Request {
     /**
-     * @var Environment
+     * @var Worldpay_Environment
      */
     private $environment;
 
@@ -32,7 +27,7 @@ class Request
     private $amount;
 
     /**
-     * @var Currency
+     * @var Worldpay_Currency
      */
     private $currency;
 
@@ -49,23 +44,27 @@ class Request
     /**
      * @var array
     */
-    private $defaultSignatureFields = ['instId', 'cartId', 'currency', 'amount'];
+    private $defaultSignatureFields = array(
+        'instId', 
+        'cartId', 
+        'currency', 
+        'amount'
+    );
 
     /**
-     * Create a new Request
+     * Create a new Worldpay_Request
      *
-     * @param Environment $environment
+     * @param Worldpay_Environment $environment
      * @param string $instId
      * @param string $cartId
      * @param string $secret
      * @param float $amount
-     * @param Currency $currency
+     * @param Worldpay_Currency $currency
      * @param string $route
      * @param array $parameters
      * @return void
      */
-    public function __construct(Environment $environment, $instId, $cartId, $secret, $amount, Currency $currency, $route, array $parameters = [])
-    {
+    public function __construct(Worldpay_Environment $environment, $instId, $cartId, $secret, $amount, Worldpay_Currency $currency, $route, array $parameters = array()) {
         $this->environment = $environment;
         $this->instId      = $instId;
         $this->cartId      = $cartId;
@@ -80,10 +79,9 @@ class Request
      * Set the signature fields to use in the signature hash
      *
      * @param array $fields
-     * @return Request
+     * @return Worldpay_Request
      */
-    public function setSignatureFields(array $fields)
-    {
+    public function setSignatureFields(array $fields) {
         $this->defaultSignatureFields = array_merge($this->defaultSignatureFields, $fields);
 
         return $this;
@@ -92,25 +90,23 @@ class Request
     /**
      * Send the request to WorldPay
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Worldpay_RedirectResponse
      */
-    public function send()
-    {
+    public function send() {
         $request = $this->prepare();
 
-        $url = $request->route.'?signature='.$request->signature.'&'.http_build_query($request->data);
+        $url = $request->route . '?signature=' . $request->signature . '&' . http_build_query($request->data);
 
-        return RedirectResponse::create($url)->send();
+        return Worldpay_RedirectResponse::create($url)->send();
     }
 
     /**
      * Return an object containing the request
      *
-     * @return Body
+     * @return Worldpay_Body
      */
-    public function prepare()
-    {
-        return new Body(
+    public function prepare() {
+        return new Worldpay_Body(
             (string) $this->route,
             $this->generateSignature(),
             $this->getTheRequestParameters()
@@ -122,14 +118,13 @@ class Request
      *
      * @return string
      */
-    private function generateSignature()
-    {
-        $defaults = [
+    private function generateSignature() {
+        $defaults = array(
             'instId'    => $this->instId,
             'cartId'    => $this->cartId,
             'currency'  => $this->currency,
             'amount'    => $this->amount
-        ];
+        );
 
         $parameters = array_intersect_key($this->parameters, array_flip($this->defaultSignatureFields));
 
@@ -141,14 +136,13 @@ class Request
      *
      * @return array
      */
-    private function getTheRequestParameters()
-    {
-        return array_merge([
+    private function getTheRequestParameters() {
+        return array_merge(array(
             'instId'    => $this->instId,
             'cartId'    => $this->cartId,
             'currency'  => (string) $this->currency,
             'amount'    => $this->amount,
             'testMode'  => $this->environment->asInt()
-        ], $this->parameters);
+        ), $this->parameters);
     }
 }

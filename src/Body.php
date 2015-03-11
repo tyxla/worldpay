@@ -1,9 +1,6 @@
-<?php namespace PhilipBrown\WorldPay;
+<?php
 
-use Assert\Assertion;
-
-class Body
-{
+class Worldpay_Body {
     /**
      * @var string
      */
@@ -20,18 +17,17 @@ class Body
     private $data;
 
     /**
-     * Create a new immutable Body instance
+     * Create a new immutable Worldpay_Body instance
      *
      * @param string $route
      * @param string $signature
      * @param array $data
      * @return void
      */
-    public function __construct($route, $signature, $data)
-    {
-        Assertion::url($route);
-        Assertion::string($signature);
-        Assertion::isArray($data);
+    public function __construct($route, $signature, $data) {
+        Worldpay_Assertion::url($route);
+        Worldpay_Assertion::string($signature);
+        Worldpay_Assertion::isArray($data);
 
         $this->route     = $route;
         $this->signature = $signature;
@@ -44,8 +40,7 @@ class Body
      * @param string $key
      * @return mixed
      */
-    public function __get($key)
-    {
+    public function __get($key) {
         if(property_exists($this, $key)) {
             return $this->$key;
         }

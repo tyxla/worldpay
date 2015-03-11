@@ -1,6 +1,5 @@
-<?php namespace PhilipBrown\WorldPay;
+<?php
 
-class InvalidRequestException extends \Exception
-{
+class Worldpay_InvalidRequestException extends Exception {
 
 }
